@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ThroughEveryAge.Data;
 using ThroughEveryAge.Models;
 
 namespace ThroughEveryAge.Controllers
@@ -56,6 +58,27 @@ namespace ThroughEveryAge.Controllers
                 footer = "the footer text",
                 classname = "purple-event"
             });
+
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+
+            using (var context = new ApplicationDbContext(optionsBuilder.Options))
+            {
+                var eventsFromDb = context.Events.ToList();
+
+                foreach (var item in eventsFromDb)
+                {
+                    calendarEvents.Add(new CalendarEvent
+                    {
+                        date = item.Date.ToString(@"yyyy-MM-dd"),
+                        badge = item.Badge,
+                        body = "<p>" + item.Body + "</p>",
+                        classname = item.ClassName,
+                        footer = item.Footer,
+                        title = item.Title
+                    });
+                }
+            }
+
 
             return Json(calendarEvents);
         }
