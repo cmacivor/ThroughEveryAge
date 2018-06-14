@@ -7,7 +7,7 @@ namespace ThroughEveryAge.Models
 {
     public class CalendarEvent
     {
-        public DateTime date { get; set; }
+        public string date { get; set; }
 
         public bool badge { get; set; }
 

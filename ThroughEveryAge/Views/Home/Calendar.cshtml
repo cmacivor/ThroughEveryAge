@@ -11,29 +11,38 @@
 
     $(document).ready(function () {
 
+        fetch('/Home/GetCalendarData')
+            .then(function (response) {
+                if (response.ok) {
+                    return response.json();
+                }
+            })
+            .then(function (myJson) {
+                console.log(myJson);
+
+                $("#my-calendar").zabuto_calendar({
+                    language: "en",
+
+                    //modal: true
+                    action: function () {
+                        return myDateFunction(this.id, false);
+                    },
+                    action_nav: function () {
+                        return myNavFunction(this.id);
+                    },
+                    data: myJson //eventData,
+                    //ajax: {
+                    //    url: '/Home/GetCalendarData',
+                    //    modal: true
+                    //}
+                });
+            });
+
+
         var eventData = [
             { "date": "2018-06-01", "badge": false, "title": "Example 1" },
             { "date": "2018-06-08", "badge": true, "title": "Example 2" }
         ];
-
-        $("#my-calendar").zabuto_calendar({
-            language: "en",
-
-            //modal: true
-            action: function () {
-                return myDateFunction(this.id, false);
-            },
-            action_nav: function () {
-                return myNavFunction(this.id);
-            },
-            data: eventData,
-            //ajax: {
-            //    url: '/Home/GetCalendarData',
-            //    modal: true
-            //}
-        });
-
-
 
         //alert('test');
     });
@@ -48,6 +57,7 @@
         if (hasEvent && !fromModal) {
             //return false;
             alert('this date has an event! ' + ' It is ' + date);
+            return false;
         }
 
         //$("#date-popover-content").html('You clicked on date ' + date);
