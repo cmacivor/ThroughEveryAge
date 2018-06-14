@@ -5,13 +5,64 @@
 
 <h2>Calendar</h2>
 <br />
+
 <div id="my-calendar"></div>
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $("#my-calendar").zabuto_calendar({ language: "en" });
+
+        var eventData = [
+            { "date": "2018-06-01", "badge": false, "title": "Example 1" },
+            { "date": "2018-06-08", "badge": true, "title": "Example 2" }
+        ];
+
+        $("#my-calendar").zabuto_calendar({
+            language: "en",
+
+            //modal: true
+            action: function () {
+                return myDateFunction(this.id, false);
+            },
+            action_nav: function () {
+                return myNavFunction(this.id);
+            },
+            data: eventData,
+            //ajax: {
+            //    url: '/Home/GetCalendarData',
+            //    modal: true
+            //}
+        });
+
+
+
         //alert('test');
     });
+
+    function myDateFunction(id, fromModal) {
+        //$("#date-popover").hide();
+        if (fromModal) {
+            $("#" + id + "_modal").modal("hide");
+        }
+        var date = $("#" + id).data("date");
+        var hasEvent = $("#" + id).data("hasEvent");
+        if (hasEvent && !fromModal) {
+            //return false;
+            alert('this date has an event! ' + ' It is ' + date);
+        }
+
+        //$("#date-popover-content").html('You clicked on date ' + date);
+        //$("#date-popover").show();
+        alert('You clicked on date ' + date);
+        return true;
+    }
+
+    function myNavFunction(id) {
+        //$("#date-popover").hide();
+        var nav = $("#" + id).data("navigation");
+        var to = $("#" + id).data("to");
+        //console.log('nav ' + nav + ' to: \ + to.month + ' / ' + to.year);
+        console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
+    }
 </script>
 
 

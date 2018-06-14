@@ -31,8 +31,33 @@ namespace ThroughEveryAge.Controllers
 
         public IActionResult Calendar()
         {
-
+            
             return View();
+        }
+
+        public JsonResult GetCalendarData(int id)
+        {
+            var calendarEvents = new List<CalendarEvent>();
+            calendarEvents.Add(new CalendarEvent
+            {
+                date = new DateTime(2018, 06, 13),
+                badge = true,
+                title = "one title",
+                body = "<p>woo some text</p>",
+                footer = "the footer text",
+                classname = "purple-event"
+            });
+            //calendarEvents.Add(new CalendarEvent
+            //{
+            //    date = new DateTime(2018, 06, 10),
+            //    badge = true,
+            //    title = "one title 2",
+            //    body = "<p>woo some textsdfasdf</p>",
+            //    footer = "the footer text",
+            //    classname = "purple-event"
+            //});
+
+            return Json(calendarEvents);
         }
 
         public IActionResult Error()
