@@ -15,7 +15,14 @@ namespace ThroughEveryAge.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var message = new CalendarEventMessageViewModel();
+
+            if (TempData["CreateEvent"] != null)
+            {
+                message.Message = TempData["CreateEvent"].ToString();
+            }
+
+            return View(message);
         }
 
         public IActionResult CreateEvent()
@@ -44,7 +51,9 @@ namespace ThroughEveryAge.Controllers
                 context.SaveChanges();
             }
 
-                return RedirectToAction("Index");
+            TempData["CreateEvent"] = "Event Successfully Created";
+
+            return RedirectToAction("Index");
         }
     }
 }

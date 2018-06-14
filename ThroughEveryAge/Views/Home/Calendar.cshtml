@@ -6,46 +6,53 @@
 <h2>Calendar</h2>
 <br />
 
+@{ 
+    if (User.IsInRole("Admin"))
+    {
+        <a asp-action="CreateEvent" asp-controller="Event">Create Event</a>
+    }
+}
+
 <div id="my-calendar"></div>
 <script type="text/javascript">
 
     $(document).ready(function () {
 
-        fetch('/Home/GetCalendarData')
-            .then(function (response) {
-                if (response.ok) {
-                    return response.json();
-                }
-            })
+    fetch('/Home/GetCalendarData')
+        .then(function (response) {
+        if (response.ok) {
+            return response.json();
+        }
+    })
             .then(function (myJson) {
-                console.log(myJson);
+        console.log(myJson);
 
                 $("#my-calendar").zabuto_calendar({
-                    language: "en",
+            language: "en",
 
                     //modal: true
                     action: function () {
-                        return myDateFunction(this.id, false);
-                    },
+                return myDateFunction(this.id, false);
+            },
                     action_nav: function () {
-                        return myNavFunction(this.id);
-                    },
+                return myNavFunction(this.id);
+            },
                     data: myJson //eventData,
                     //ajax: {
                     //    url: '/Home/GetCalendarData',
                     //    modal: true
                     //}
-                });
-            });
+        });
+    });
 
 
-        var eventData = [
+    var eventData = [
             { "date": "2018-06-01", "badge": false, "title": "Example 1" },
             { "date": "2018-06-08", "badge": true, "title": "Example 2" }
         ];
 
-        //alert('test');
-    });
+    //alert('test');
+});
 
     function myDateFunction(id, fromModal) {
         //$("#date-popover").hide();
