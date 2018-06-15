@@ -37,13 +37,17 @@ namespace ThroughEveryAge.Controllers
             return View();
         }
 
-        public JsonResult GetSingleCalendarDate(DateTime date)
+        public JsonResult GetSingleCalendarDate(string date)
         {
+            var splitStrings = date.Split("_");
+
+            var dateString = splitStrings.Where(x => x.Contains("-")).FirstOrDefault();
+
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
             using (var context = new ApplicationDbContext(optionsBuilder.Options))
             {
-                var singleEvent = context.Events.FirstOrDefault(x => x.Date == Convert.ToDateTime(date));
+                var singleEvent = context.Events.FirstOrDefault(x => x.Date == Convert.ToDateTime(dateString));
 
                 return Json(singleEvent);
             }

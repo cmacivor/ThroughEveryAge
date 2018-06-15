@@ -293,10 +293,13 @@ $.fn.zabuto_calendar = function (options) {
 
                         if (typeof($calendarElement.data('actionFunction')) === 'function') {
                             $dowElement.addClass('dow-clickable');
-                            $dowElement.click(function () {
+                            $dowElement.on("click", function () {
                                 $calendarElement.data('selectedDate', $(this).data('date'));
                             });
                             $dowElement.click($calendarElement.data('actionFunction'));
+                            //$dowElement.on("click", function () {
+                            //    $calendarElement.data('actionFunction');
+                            //});
                         }
 
                         $dowRow.append($dowElement);
