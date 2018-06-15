@@ -85,57 +85,6 @@
      
     }
            
-    function myDateFunction(id, fromModal) {
-
-        if (fromModal) {
-            $("#" + id + "_modal").modal("hide");
-        }
-        var date = $("#" + id).data("date");
-        var hasEvent = $("#" + id).data("hasEvent");
-        if (hasEvent && !fromModal) {
-
-            fetch('/Home/GetSingleCalendarDate/?date=' + date)
-                .then(function (response) {
-                    if (response.ok) {
-                        return response.json();
-                    }
-                }).then(function (jsonResponse) {
-                    console.log(jsonResponse);
-
-                    $("#my-calendar").zabuto_calendar({
-                        language: "en",
-                        action: function () {
-                            return myDateFunction(this.id, false);
-                            //getAllCalendarData();
-                            //return this.id;
-                        },
-                        action_nav: function () {
-                            return myNavFunction(this.id);
-                        },
-                        data: myJson
-                    });
-
-                    //getAllCalendarData();
-                    //$("#eventModal").show();
-                });
-
-            //alert('this date has an event! ' + ' It is ' + date);
-            return false;
-        }
-
-        //$("#date-popover-content").html('You clicked on date ' + date);
-        //$("#date-popover").show();
-        alert('You clicked on date ' + date);
-        return true;
-    }
-
-    function myNavFunction(id) {
-        //$("#date-popover").hide();
-        var nav = $("#" + id).data("navigation");
-        var to = $("#" + id).data("to");
-        //console.log('nav ' + nav + ' to: \ + to.month + ' / ' + to.year);
-        console.log('nav ' + nav + ' to: ' + to.month + '/' + to.year);
-    }
 </script>
 
 
