@@ -37,27 +37,21 @@ namespace ThroughEveryAge.Controllers
             return View();
         }
 
+        public JsonResult GetSingleCalendarDate(DateTime date)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+
+            using (var context = new ApplicationDbContext(optionsBuilder.Options))
+            {
+                var singleEvent = context.Events.FirstOrDefault(x => x.Date == Convert.ToDateTime(date));
+
+                return Json(singleEvent);
+            }
+        }
+
         public JsonResult GetCalendarData(int id)
         {
             var calendarEvents = new List<CalendarEvent>();
-            //calendarEvents.Add(new CalendarEvent
-            //{
-            //    date = "2018-06-14", //new DateTime(2018, 06, 13).Date.ToString(),
-            //    badge = true,
-            //    title = "one title",
-            //    body = "<p>woo some text</p>",
-            //    footer = "the footer text",
-            //    classname = "purple-event"
-            //});
-            //calendarEvents.Add(new CalendarEvent
-            //{
-            //    date = "2018-06-12", //new DateTime(2018, 06, 10).Date.ToString(),
-            //    badge = true,
-            //    title = "one title 2",
-            //    body = "<p>woo some textsdfasdf</p>",
-            //    footer = "the footer text",
-            //    classname = "purple-event"
-            //});
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
