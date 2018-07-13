@@ -1,0 +1,30 @@
+﻿@model ThroughEveryAge.Models.LessonViewModel
+
+@{
+    ViewData["Title"] = "ShowDailyLesson";
+}
+
+<h2>ShowDailyLesson</h2>
+
+<div>
+    <h4>Lesson for: @Model.Date.ToString("d")</h4>
+    <hr />
+    <dl class="dl-horizontal"></dl>
+    <br />
+    @if (Model.LessonTypeId == 3)
+    {
+        <video width="320" height="240" controls>
+            <source src="~/uploads/@Model.FileName" />
+        </video>
+
+    }
+    @if (Model.LessonTypeId == 1 || Model.LessonTypeId == 2)
+    {
+        <embed src="~/uploads/@Model.FileName" type="application/pdf" width="800" height="2100" />
+
+    }
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="DailyLessons">Back to List</a>
+</div>

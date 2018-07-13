@@ -49,6 +49,33 @@ namespace ThroughEveryAge.Controllers
             return View();
         }
 
+        public IActionResult ShowDailyLesson(string fileId, int lessonId)
+        {
+            LessonViewModel dailyLesson = new LessonViewModel();
+            //dailyLesson.DailyLessons = new List<DailyLessonViewModel>();
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            using (var context = new ApplicationDbContext(optionsBuilder.Options))
+            {
+                var lesson = context.LessonContents.FirstOrDefault(x => x.LessonContentId == lessonId);
+                dailyLesson.Date = lesson.Date;
+                dailyLesson.Description = lesson.Description;
+                dailyLesson.LessonTypeId = lesson.LessonType;
+                dailyLesson.Title = lesson.Title;
+                dailyLesson.FileName = lesson.FileId;
+                //var vm = new LessonViewModel
+                //{
+                //    Date = lesson.Date,
+                //    Description = lesson.Description,
+                //    LessonTypeId = lesson.LessonType,
+                //    Title = lesson.Title,
+                //    FileName = fileId
+                //};
+                //dailyLesson.DailyLessons.Add(vm);
+            }
+
+            return View(dailyLesson);
+        }
+
         public IActionResult DailyLessons()
         {
             var lessons = new List<DailyLessonViewModel>();
@@ -60,11 +87,13 @@ namespace ThroughEveryAge.Controllers
                 {
                     var viewModel = new DailyLessonViewModel
                     {
+                        LessonContentId = lesson.LessonContentId,
                         Date = lesson.Date,
                         Description = lesson.Description,
                         Title = lesson.Title,
                         LessonTypeId = lesson.LessonType,
-                        FileName = lesson.FileId  
+                        FileName = lesson.FileId,
+                        
                     };
                     lessons.Add(viewModel);
                 }

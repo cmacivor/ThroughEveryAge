@@ -10,6 +10,8 @@ namespace ThroughEveryAge.Models
 {
     public class DailyLessonViewModel
     {
+        public int LessonContentId { get; set; }
+
         [Required]
         public DateTime Date { get; set; }
 

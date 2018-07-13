@@ -9,7 +9,8 @@
 @foreach (var lesson in Model.DailyLessons)
 {
     <p>Daily Lesson for: @lesson.Date.ToString("d")</p>
-    if (lesson.LessonTypeId == 3)
+    @Html.ActionLink("Lesson Details", "ShowDailyLesson", "Home",  new {fileId = lesson.FileName, lessonId = lesson.LessonContentId })
+    @*if (lesson.LessonTypeId == 3)
     {
         <video width="320" height="240" controls>
             <source src="~/uploads/@lesson.FileName" />
@@ -20,7 +21,7 @@
     {
        <embed src="~/uploads/@lesson.FileName" type="application/pdf" width="800" height="2100"/>
 
-    }
+    }*@
 
 }
 <br />
