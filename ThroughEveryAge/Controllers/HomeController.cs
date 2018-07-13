@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +16,14 @@ namespace ThroughEveryAge.Controllers
 {
     public class HomeController : Controller
     {
+
+        private IHostingEnvironment _hostingEnvironment;
+
+        public HomeController(IHostingEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -77,15 +87,58 @@ namespace ThroughEveryAge.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin,Manager,Member")]
-        public IActionResult CreateLesson(DailyLessonViewModel viewModel)
+        public async Task<IActionResult> CreateLesson(DailyLessonViewModel viewModel)
         {
             if (!ModelState.IsValid)
             {
                 var model = GetDailyLessonViewModel();
                 return View(model);
             }
+            else
+            {
+                int lessonType = 0;
+                if (viewModel.LessonType == "Reading")
+                {
+                    lessonType = 1;
+                }
+                if (viewModel.LessonType == "Reflection")
+                {
+                    lessonType = 2;
+                }
+                if (viewModel.LessonType == "Video")
+                {
+                    lessonType = 3;
+                }
+                if (viewModel.LessonType == "Journal")
+                {
+                    lessonType = 4;
+                }
+                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
-            return null;
+                //var fileId = Guid.NewGuid();
+                using (var context = new ApplicationDbContext(optionsBuilder.Options))
+                {
+                    var lessonContent = new LessonContent
+                    {
+                        Date = viewModel.Date,
+                        FileId = viewModel.File.FileName,
+                        Description = viewModel.Description,
+                        LessonType = lessonType,
+                        Title = viewModel.Title
+                    };
+                    context.LessonContents.Add(lessonContent);
+                    context.SaveChanges();
+                }
+
+                var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+                var filePath = Path.Combine(uploads, viewModel.File.FileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await viewModel.File.CopyToAsync(fileStream);
+                }
+            }
+
+            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "Admin,Manager,Member")]

@@ -11,7 +11,7 @@ namespace ThroughEveryAge.Data
 
         public DateTime Date { get; set; }
 
-        public Guid FileId { get; set; }
+        public string FileId { get; set; }
 
         public int LessonType { get; set; }
 
