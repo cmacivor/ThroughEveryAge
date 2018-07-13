@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "DailyLessons";
+}
+
+<h2>Daily Lessons</h2>
+<br />
+@{ 
+    if (User.IsInRole("Admin") || (User.IsInRole("Manager")))
+    {
+        <a asp-action="CreateLesson" asp-controller="Home">Create Daily Lesson</a>
+
+    }
+}
+

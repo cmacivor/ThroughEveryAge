@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ThroughEveryAge.Data;
 using ThroughEveryAge.Models;
@@ -34,6 +36,61 @@ namespace ThroughEveryAge.Controllers
         public IActionResult Calendar()
         {
             
+            return View();
+        }
+
+        public IActionResult DailyLessons()
+        {
+            return View();
+        }
+
+        public IActionResult CreateLesson()
+        {
+            DailyLessonViewModel model = GetDailyLessonViewModel();
+
+            model.Date = DateTime.Now;
+
+            return View(model);
+        }
+
+        private static DailyLessonViewModel GetDailyLessonViewModel()
+        {
+            var model = new DailyLessonViewModel();
+
+            var lessonTypes = Enum.GetNames(typeof(LessonType)).ToList();
+
+            model.LessonTypes = lessonTypes;
+
+            var selectListItems = new List<SelectListItem>();
+            foreach (var type in lessonTypes)
+            {
+                selectListItems.Add(new SelectListItem
+                {
+                    Value = type,
+                    Text = type
+                });
+            }
+
+            model.LessonTypeSelectListItems = selectListItems;
+            return model;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Manager,Member")]
+        public IActionResult CreateLesson(DailyLessonViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var model = GetDailyLessonViewModel();
+                return View(model);
+            }
+
+            return null;
+        }
+
+        [Authorize(Roles = "Admin,Manager,Member")]
+        public IActionResult Curriculum()
+        {
             return View();
         }
 
