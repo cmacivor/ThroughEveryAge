@@ -51,7 +51,29 @@ namespace ThroughEveryAge.Controllers
 
         public IActionResult DailyLessons()
         {
-            return View();
+            var lessons = new List<DailyLessonViewModel>();
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            using (var context = new ApplicationDbContext(optionsBuilder.Options))
+            {
+                var dailyLessons = context.LessonContents.ToList();
+                foreach (var lesson in dailyLessons)
+                {
+                    var viewModel = new DailyLessonViewModel
+                    {
+                        Date = lesson.Date,
+                        Description = lesson.Description,
+                        Title = lesson.Title,
+                        LessonTypeId = lesson.LessonType,
+                        FileName = lesson.FileId  
+                    };
+                    lessons.Add(viewModel);
+                }
+
+            }
+
+            var dlModel = new LessonViewModel { DailyLessons = lessons };
+      
+            return View(dlModel);
         }
 
         public IActionResult CreateLesson()
@@ -138,7 +160,7 @@ namespace ThroughEveryAge.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("DailyLessons");
         }
 
         [Authorize(Roles = "Admin,Manager,Member")]

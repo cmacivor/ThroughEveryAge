@@ -1,9 +1,28 @@
-﻿
+﻿@model ThroughEveryAge.Models.LessonViewModel
+
 @{
     ViewData["Title"] = "DailyLessons";
 }
 
 <h2>Daily Lessons</h2>
+<br />
+@foreach (var lesson in Model.DailyLessons)
+{
+    <p>Daily Lesson for: @lesson.Date.ToString("d")</p>
+    if (lesson.LessonTypeId == 3)
+    {
+        <video width="320" height="240" controls>
+            <source src="~/uploads/@lesson.FileName" />
+        </video>
+
+    }
+    if (lesson.LessonTypeId == 1 || lesson.LessonTypeId == 2)
+    {
+       <embed src="~/uploads/@lesson.FileName" type="application/pdf" width="800" height="2100"/>
+
+    }
+
+}
 <br />
 @{ 
     if (User.IsInRole("Admin") || (User.IsInRole("Manager")))

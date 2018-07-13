@@ -13,10 +13,12 @@ namespace ThroughEveryAge.Models
         [Required]
         public DateTime Date { get; set; }
 
-        public Guid FileId { get; set; }
+        public string FileName { get; set; }
 
         [Required]
         public string LessonType { get; set; }
+
+        public int LessonTypeId { get; set; }
 
         //[Required]
         public IFormFile File { get; set; }
