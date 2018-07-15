@@ -10,6 +10,7 @@
 {
     <p>Daily Lesson for: @lesson.Date.ToString("d")</p>
     @Html.ActionLink("Lesson Details", "ShowDailyLesson", "Home",  new {fileId = lesson.FileName, lessonId = lesson.LessonContentId })
+    <br />
     @*if (lesson.LessonTypeId == 3)
     {
         <video width="320" height="240" controls>

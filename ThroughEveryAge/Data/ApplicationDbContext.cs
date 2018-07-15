@@ -14,6 +14,8 @@ namespace ThroughEveryAge.Data
 
         public DbSet<LessonContent> LessonContents { get; set; }
 
+        public DbSet<Journal> Journals { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
