@@ -43,6 +43,13 @@ namespace ThroughEveryAge.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Contact(ContactViewModel viewModel)
+        {
+
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Calendar()
         {
             
@@ -62,15 +69,6 @@ namespace ThroughEveryAge.Controllers
                 dailyLesson.LessonTypeId = lesson.LessonType;
                 dailyLesson.Title = lesson.Title;
                 dailyLesson.FileName = lesson.FileId;
-                //var vm = new LessonViewModel
-                //{
-                //    Date = lesson.Date,
-                //    Description = lesson.Description,
-                //    LessonTypeId = lesson.LessonType,
-                //    Title = lesson.Title,
-                //    FileName = fileId
-                //};
-                //dailyLesson.DailyLessons.Add(vm);
             }
 
             return View(dailyLesson);

@@ -22,7 +22,9 @@ namespace ThroughEveryAge.Controllers
         // GET: Journals
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Journals.ToListAsync());
+            var userId = Guid.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value);
+
+            return View(await _context.Journals.Where(x => x.UserId == userId).ToListAsync());
         }
 
         // GET: Journals/Details/5
