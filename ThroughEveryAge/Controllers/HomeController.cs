@@ -166,13 +166,17 @@ namespace ThroughEveryAge.Controllers
                 }
                 var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
-                //var fileId = Guid.NewGuid();
+                string fileid = string.Empty;
+                if (viewModel.File != null)
+                {
+                    fileid = viewModel.File.FileName;
+                }
                 using (var context = new ApplicationDbContext(optionsBuilder.Options))
                 {
                     var lessonContent = new LessonContent
                     {
                         Date = viewModel.Date,
-                        FileId = viewModel.File.FileName,
+                        FileId = fileid,
                         Description = viewModel.Description,
                         LessonType = lessonType,
                         Title = viewModel.Title
@@ -181,12 +185,15 @@ namespace ThroughEveryAge.Controllers
                     context.SaveChanges();
                 }
 
-                var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
-                var filePath = Path.Combine(uploads, viewModel.File.FileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                if (!string.IsNullOrEmpty(fileid))
                 {
-                    await viewModel.File.CopyToAsync(fileStream);
-                }
+                    var uploads = Path.Combine(_hostingEnvironment.WebRootPath, "uploads");
+                    var filePath = Path.Combine(uploads, viewModel.File.FileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await viewModel.File.CopyToAsync(fileStream);
+                    }
+                }  
             }
 
             return RedirectToAction("DailyLessons");

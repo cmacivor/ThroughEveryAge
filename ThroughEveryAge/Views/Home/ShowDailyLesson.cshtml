@@ -21,7 +21,10 @@
     @if (Model.LessonTypeId == 1 || Model.LessonTypeId == 2)
     {
         <embed src="~/uploads/@Model.FileName" type="application/pdf" width="800" height="2100" />
-
+    }
+    @if (Model.LessonTypeId == 4)
+    {
+        <a asp-action="Create" asp-controller="Journals">Create Journal</a>
     }
 </div>
 <div>
