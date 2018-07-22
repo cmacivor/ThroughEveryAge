@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ThroughEveryAge.Data;
 using ThroughEveryAge.Models;
 
@@ -19,9 +20,12 @@ namespace ThroughEveryAge.Controllers
 
         private IHostingEnvironment _hostingEnvironment;
 
-        public HomeController(IHostingEnvironment hostingEnvironment)
+        public IConfiguration Configuration { get; }
+
+        public HomeController(IHostingEnvironment hostingEnvironment, IConfiguration configuration)
         {
             _hostingEnvironment = hostingEnvironment;
+            Configuration = configuration;
         }
 
         public IActionResult Index()
@@ -61,7 +65,7 @@ namespace ThroughEveryAge.Controllers
             LessonViewModel dailyLesson = new LessonViewModel();
             //dailyLesson.DailyLessons = new List<DailyLessonViewModel>();
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            using (var context = new ApplicationDbContext(optionsBuilder.Options))
+            using (var context = new ApplicationDbContext(optionsBuilder.Options, Configuration))
             {
                 var lesson = context.LessonContents.FirstOrDefault(x => x.LessonContentId == lessonId);
                 dailyLesson.Date = lesson.Date;
@@ -78,7 +82,7 @@ namespace ThroughEveryAge.Controllers
         {
             var lessons = new List<DailyLessonViewModel>();
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            using (var context = new ApplicationDbContext(optionsBuilder.Options))
+            using (var context = new ApplicationDbContext(optionsBuilder.Options, Configuration))
             {
                 var dailyLessons = context.LessonContents.ToList();
                 foreach (var lesson in dailyLessons)
@@ -169,7 +173,7 @@ namespace ThroughEveryAge.Controllers
                 {
                     fileid = viewModel.File.FileName;
                 }
-                using (var context = new ApplicationDbContext(optionsBuilder.Options))
+                using (var context = new ApplicationDbContext(optionsBuilder.Options, Configuration))
                 {
                     var lessonContent = new LessonContent
                     {
@@ -211,7 +215,7 @@ namespace ThroughEveryAge.Controllers
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
-            using (var context = new ApplicationDbContext(optionsBuilder.Options))
+            using (var context = new ApplicationDbContext(optionsBuilder.Options, Configuration))
             {
                 var singleEvent = context.Events.FirstOrDefault(x => x.Date == Convert.ToDateTime(dateString));
 
@@ -225,7 +229,7 @@ namespace ThroughEveryAge.Controllers
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
 
-            using (var context = new ApplicationDbContext(optionsBuilder.Options))
+            using (var context = new ApplicationDbContext(optionsBuilder.Options, Configuration))
             {
                 var eventsFromDb = context.Events.ToList();
 

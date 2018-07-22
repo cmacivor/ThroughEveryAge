@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ThroughEveryAge.Data;
 using ThroughEveryAge.Models;
 
@@ -13,6 +14,13 @@ namespace ThroughEveryAge.Controllers
     [Authorize(Roles = "Admin,Manager")]
     public class EventController : Controller
     {
+        public IConfiguration Configuration { get; }
+
+        public EventController(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         public IActionResult Index()
         {
             var message = new CalendarEventMessageViewModel();
@@ -45,7 +53,7 @@ namespace ThroughEveryAge.Controllers
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             
-            using (var context = new ApplicationDbContext(optionsBuilder.Options))
+            using (var context = new ApplicationDbContext(optionsBuilder.Options, Configuration))
             {
                 context.Events.Add(calendarEvent);
                 context.SaveChanges();

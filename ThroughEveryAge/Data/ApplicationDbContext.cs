@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ThroughEveryAge.Models;
 
 namespace ThroughEveryAge.Data
@@ -16,14 +17,25 @@ namespace ThroughEveryAge.Data
 
         public DbSet<Journal> Journals { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+
+        public IConfiguration Configuration { get; }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
             : base(options)
         {
+            Configuration = configuration;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ThroughEveryAgeDB;Integrated Security=True");
+            //string conString = ConfigurationExtensions.GetConnectionString(this.Configuration, "DefaultConnection");
+
+            string conString = ConfigurationExtensions.GetConnectionString(Configuration, "DefaultConnection");
+
+            //optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ThroughEveryAgeDB;Integrated Security=True");
+            optionsBuilder.UseSqlServer(conString);
+
+            //ConfigurationManager
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
