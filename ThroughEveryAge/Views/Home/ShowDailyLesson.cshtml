@@ -1,10 +1,10 @@
 ﻿@model ThroughEveryAge.Models.LessonViewModel
 
 @{
-    ViewData["Title"] = "ShowDailyLesson";
+    ViewData["Title"] = "Daily Lesson";
 }
 
-<h2>ShowDailyLesson</h2>
+<h2>Daily Lesson</h2>
 
 <div>
     <h4>Lesson for: @Model.Date.ToString("d")</h4>
@@ -18,7 +18,8 @@
         </video>
 
     }
-    @if (Model.LessonTypeId == 1 || Model.LessonTypeId == 2)
+    
+    @if (Model.LessonTypeId == 1 || Model.LessonTypeId == 2) //1=reading, 2=reflection, 3=video, 4=Journal
     {
         <embed src="~/uploads/@Model.FileName" type="application/pdf" width="800" height="2100" />
     }
@@ -28,6 +29,5 @@
     }
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="DailyLessons">Back to List</a>
 </div>

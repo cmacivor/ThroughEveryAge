@@ -46,10 +46,14 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-controller="Home" asp-action="DailyLessons">Curriculum</a></li>             
+                    <li><a asp-controller="Home" asp-action="DailyLessons">Curriculum</a></li>
                     @if (User.IsInRole("Admin"))
                     {
-                    <li><a asp-area="" asp-controller="Contacts" asp-action="Index">Contacts</a></li>
+                        <li><a asp-area="" asp-controller="Contacts" asp-action="Index">Contacts</a></li>
+                    }
+                    @if (User.IsInRole("Member"))
+                    {
+                        <li><a asp-area="" asp-controller="Journals" asp-action="Index">Journals</a></li>
                     }
                 </ul>
                 @await Html.PartialAsync("_LoginPartial")
