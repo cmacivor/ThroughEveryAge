@@ -42,7 +42,7 @@ namespace ThroughEveryAge
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, ApplicationDbContext context)
         {
             if (env.IsDevelopment())
             {
@@ -65,6 +65,8 @@ namespace ThroughEveryAge
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            context.Database.Migrate();
 
             CreateRoles(serviceProvider).Wait();
         }
@@ -90,12 +92,15 @@ namespace ThroughEveryAge
             //creating a super user who could maintain the web app
             var poweruser = new ApplicationUser
             {
-                UserName = Configuration.GetSection("UserSettings")["UserEmail"],
-                Email = Configuration.GetSection("UserSettings")["UserEmail"]
+                //UserName = Configuration.GetSection("UserSettings")["UserEmail"],
+                //Email = Configuration.GetSection("UserSettings")["UserEmail"]
+                UserName = "admin@gmail.com",
+                Email = "admin@gmail.com" //Configuration.GetSection("UserSettings")["UserEmail"]
             };
 
-            string UserPassword = Configuration.GetSection("UserSettings")["UserPassword"];
-            var _user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["UserEmail"]);
+            string UserPassword = "Qwerty123$"; //Configuration.GetSection("UserSettings")["UserPassword"];
+            //var _user = await UserManager.FindByEmailAsync(Configuration.GetSection("UserSettings")["UserEmail"]);
+            var _user = await UserManager.FindByEmailAsync("admin@gmail.com");
 
             if (_user == null)
             {
