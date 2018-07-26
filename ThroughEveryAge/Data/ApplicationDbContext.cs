@@ -17,6 +17,8 @@ namespace ThroughEveryAge.Data
 
         public DbSet<Journal> Journals { get; set; }
 
+        public DbSet<Contact> Contacts { get; set; }
+
 
         public IConfiguration Configuration { get; }
 

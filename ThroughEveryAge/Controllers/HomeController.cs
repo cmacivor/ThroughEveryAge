@@ -50,6 +50,26 @@ namespace ThroughEveryAge.Controllers
         [HttpPost]
         public IActionResult Contact(ContactViewModel viewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            using (var context = new ApplicationDbContext(optionsBuilder.Options, Configuration))
+            {
+                var contact = new Contact
+                {
+                    Email = viewModel.Email,
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName,
+                    Message = viewModel.Message,
+                    Subject = viewModel.Subject
+                };
+
+                context.Contacts.Add(contact);
+                context.SaveChanges();
+            }
 
             return RedirectToAction("Index");
         }
