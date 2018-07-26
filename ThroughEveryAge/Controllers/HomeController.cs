@@ -47,6 +47,34 @@ namespace ThroughEveryAge.Controllers
             return View();
         }
 
+        public IActionResult Contacts()
+        {
+            var contactVMs = new List<ContactViewModel>(); 
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            using (var context = new ApplicationDbContext(optionsBuilder.Options, Configuration))
+            {
+                var contacts = context.Contacts.ToList();
+                foreach (var contact in contacts)
+                {
+                    contactVMs.Add(new ContactViewModel
+                    {
+                         Email = contact.Email,
+                         FirstName = contact.FirstName,
+                         LastName = contact.LastName,
+                         Message = contact.Message,
+                         Subject = contact.Subject
+                    });
+                }
+            }
+
+            var model = new MainContactViewModel
+            {
+                contactViewModels = contactVMs
+            };
+
+            return View(model);
+        }
+
         [HttpPost]
         public IActionResult Contact(ContactViewModel viewModel)
         {
