@@ -116,6 +116,10 @@ namespace ThroughEveryAge.Controllers
             using (var context = new ApplicationDbContext(optionsBuilder.Options, Configuration))
             {
                 var lesson = context.LessonContents.FirstOrDefault(x => x.LessonContentId == lessonId);
+
+                var fileExtension = Path.GetExtension(lesson.FileId);
+
+                dailyLesson.FileExtension = fileExtension;
                 dailyLesson.Date = lesson.Date;
                 dailyLesson.Description = lesson.Description;
                 dailyLesson.LessonTypeId = lesson.LessonType;

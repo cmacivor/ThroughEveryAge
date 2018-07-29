@@ -30,5 +30,7 @@ namespace ThroughEveryAge.Models
 
         //[Required]
         public string Title { get; set; }
+
+        public string FileExtension { get; set; }
     }
 }

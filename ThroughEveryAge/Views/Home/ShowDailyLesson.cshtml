@@ -11,18 +11,45 @@
     <hr />
     <dl class="dl-horizontal"></dl>
     <br />
-    @if (Model.LessonTypeId == 3)
+
+    @if (Model.FileExtension.ToLower() == ".mp3"
+       || Model.FileExtension.ToLower() == ".m4a"
+       || Model.FileExtension.ToLower() == ".aac")
+    {
+        <audio controls>
+            <source src="~/uploads/@Model.FileName" />
+        </audio>
+    }
+
+    @if (Model.FileExtension.ToLower() == ".jpg"
+    || Model.FileExtension.ToLower() == ".png"
+    || Model.FileExtension.ToLower() == ".gif"
+    || Model.FileExtension.ToLower() == ".svg")
+    {
+        <img src="~/uploads/@Model.FileName" />
+
+    }
+
+    @if (Model.FileExtension.ToLower() == ".mp4"
+       || Model.FileExtension.ToLower() == ".mpeg"
+       || Model.FileExtension.ToLower() == ".mpv"
+       || Model.FileExtension.ToLower() == ".webm"
+       || Model.FileExtension.ToLower() == ".mpg")
     {
         <video width="320" height="240" controls>
             <source src="~/uploads/@Model.FileName" />
         </video>
 
     }
-    
-    @if (Model.LessonTypeId == 1 || Model.LessonTypeId == 2) //1=reading, 2=reflection, 3=video, 4=Journal
+    @if (Model.FileExtension.ToLower() == ".pdf")
     {
         <embed src="~/uploads/@Model.FileName" type="application/pdf" width="800" height="2100" />
     }
+
+    @*@if (Model.LessonTypeId == 1 || Model.LessonTypeId == 2) //1=reading, 2=reflection, 3=video, 4=Journal
+        {
+            <embed src="~/uploads/@Model.FileName" type="application/pdf" width="800" height="2100" />
+        }*@
     @if (Model.LessonTypeId == 4)
     {
         <a asp-action="Create" asp-controller="Journals">Create Journal</a>
