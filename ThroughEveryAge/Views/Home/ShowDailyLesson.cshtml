@@ -4,10 +4,11 @@
     ViewData["Title"] = "Daily Lesson";
 }
 
-<h2>Daily Lesson</h2>
 
 <div>
     <h4>Lesson for: @Model.Date.ToString("d")</h4>
+    <h2>@Model.Title</h2>
+    <p>@Model.Description</p>
     <hr />
     <dl class="dl-horizontal"></dl>
     <br />
